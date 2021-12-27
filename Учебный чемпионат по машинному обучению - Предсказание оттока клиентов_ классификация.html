@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta name='csrf-token-name' content='csrftoken'/>
+<meta name='csrf-token-value' content='16c495489c3a9a6a0e80e6d83d04b7fa04dcc99b065a1d5b24f607556a10056e14eff213baab6e2f'/>
+<meta name='hmac-token-name' content='Ajax-Token'/>
+
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"><title>Учебный чемпионат по машинному обучению   - Предсказание оттока клиентов: классификация</title>
+
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--[if IE]><link rel="stylesheet" type="text/css" href="css/ie.css"><![endif]-->
+  <script charset="utf-8" src="/5eb1fa428352e31b4eb50e0c.js?1639015415339"></script>
+<script type="text/javascript" src="js/lib/jquery.min.js"></script>
+
+
+
+  <script src="js/lib/ace/ace.js"></script>
+  <script src="js/lib/ace/ext-language_tools.js"></script>
+  <script src="js/editor.js"></script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+function set_tex() {
+  var tex = $(this);
+  tex.data({ lite: tex.html() });
+  var magic = '~!!!~';
+  var t = tex.attr('title');
+  t = t.replace(/(\\[a-zA-Z]+)/g, '$1' + magic);
+  t = t.replace(/([a-zA-Z0-9},])\s+(?=[a-zA-Z])/g, '$1\\,');
+  t = t.replace(new RegExp(magic, 'g'), '');
+  tex.html("\\(" + t + '\\)');
+}
+
+function unset_tex() {
+  var tex = $(this);
+  var lite = tex.data().lite;
+  if (lite)
+    tex.html(lite);
+}
+
+function apply_mathjax(p) {
+  MathJax.Hub.Queue(
+    function() { p.find('span.TeX').each(set_tex); },
+    [ 'Typeset', MathJax.Hub, p[0] ]);
+}
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: { deg: '^\\circ', sgn: [ '\\operatorname\{sgn\}' ] }
+  },
+  'HTML-CSS': { scale: 100 },
+  SVG: { scale: 100 },
+  CommonHTML: { scale: 100 },
+  tex2jax: { ignoreClass: 'problem_text', processClass: 'TeX' },
+  skipStartupTypeset: true
+});
+
+
+function mathjax_onload() {
+    $('div.problem_text').each(function() {
+    var p = $(this);
+    if (!p.find('.basic_math')[0].checked)
+      apply_mathjax(p);
+  });
+}
+MathJax.Hub.Register.StartupHook('onLoad', mathjax_onload);
+
+</script>
+<script type="text/javascript" src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS_CHTML"></script>
+<script type="text/javascript">window.MathJax || document.write('<script src="js/lib/MathJax/MathJax.js?config=TeX-AMS_CHTML"><\/script>')</script>
+
+
+
+<style>
+  div.problem_menu { display: none; width: 100%; background-color: #eeeeee; }
+  div.problem_menu ul { list-style-type: none; padding: 0; }
+  div.problem_menu ul li { display: inline-block; padding: 3px 10px; border-right: 1px solid; }
+  div.problem_menu ul li a.problem_list_link { display: inline-block; padding-top: 2px; }
+  div.problem_menu input[type=checkbox] { display: none; }
+  div.problem_menu input[type=checkbox] + span:after { content: '\2610'; }
+  div.problem_menu input[type=checkbox]:checked + span:after { content: '\2611'; }
+  div.problem_menu ul li.last_verdict { padding-top: 2px; padding-bottom: 2px; vertical-align: bottom; }
+  div.problem_menu ul li.last_verdict span { display: inline-block; vertical-align: bottom; }
+  div.problem_menu li.langs { font-weight: bold; }
+  div.problem_menu li.langs a { font-weight: normal; }
+
+  div.problem_text table.problem_header { width: 100%; }
+  div.problem_text p, div.problem_text ul, div.problem_text ol {
+    hyphens: auto; max-width: 1000px; text-align: justify; text-indent1: 3em;
+  }
+  div.problem_text p span { text-indent: 0; }
+  div.problem_text table.thin_border { border-collapse: collapse; border: 1px; }
+  div.problem_text table.thin_border td, div.problem_text table.thin_border th { border: 1px solid black; padding: 2px; }
+  div.problem_text .ace_static_highlight { font-size: inherit; }.last_verdict .verdict { padding: 0; height: 100%; width: 4em; }
+.last_verdict .verdict table { border-collapse: collapse; width: 100%; height: 100%; color: inherit; font-weight: inherit; }
+.last_verdict .verdict table td { padding: 0 0 0 2px; }
+.last_verdict .verdict table td:first-child { width: 2em; }
+.last_verdict .verdict table td:first-child a { color: inherit; }
+.last_verdict .verdict table td:last-child div { text-align: right; background: white; margin: 2px; }
+  .cond_true { color: #008000; }
+  .cond_false { color: #800000; }
+  .submit_messages { margin: 15px 0; }
+  .submit_form { margin-top: 15px; }
+  .submit_input { margin-right: 5px; }
+  .n_item .current { border: 1px solid #4040ff; box-sizing: border-box; }
+  .nav_container { position: fixed; top: 0; right: 0; overflow: auto; max-height: 100vh; }
+  .n_item { border: 1px solid #4040ff; border-top: none; }
+  .n_item:first-of-type { border-top: 1px solid #4040ff; }
+  .n_button { width: 35px; height: 18px;  text-align: center; text-decoration: none; display: inline-block; cursor: pointer; }
+  Quiz Choice { display: block; }
+  Quiz Choice:before { font-size: larger; margin-right: 0.5em; }
+  Quiz[type=checkbox] Choice:before { content: '\2610';}
+  Quiz[type=radiogroup] Choice:before { content: '\25EF';}
+  Quiz[type=text]:not(.active) { display: block; width: 50em; height: 4ex; border: 1px solid black; }
+  @media only screen and (max-device-width: 736px) { .nav_container { display: none; } }
+</style>
+</head>
+<body><noscript><img src="/299111923e15e58301f8981f6bca1ab5.gif" width="0" height="0" alt="" /></noscript>
+
+
+
+
+<div class="problem_text" id="p5730240"  lang="ru">
+  <a name="prG1"></a>
+
+  <h2>
+  
+  Задача G1. Предсказание оттока клиентов: классификация
+  <a class="jsonly problem_menu_trigger problem_menu_click">&#x2261;</a>
+  </h2>
+  <div class="jsonly problem_menu"><ul>
+    <li><a class="problem_list_link" href="../?f=problems;cid=5711904">задачи</a></li>
+    <li class="problem_details_link" style="display: none"><a href="#">детали</a></li>
+    <li><label><input type="checkbox" class="whitespace"><span></span> видимые пробелы</label></li>
+    <li><label><input type="checkbox" class="basic_math"><span></span> простые формулы</label></li>
+    <li><label><input type="checkbox" class="wide_text"><span></span> широкий текст</label></li>
+    <li><label><input type="checkbox" class="show_editor" checked="true"><span></span> редактор</label></li>
+    <li class="last_verdict" style="display: none"><span class="verdict">
+      <table><tr><td><a href="#"></a></td><td><div></div></td></tr></table>
+    </span></li>
+    
+  </ul></div>
+  <table class="problem_header">  
+  <tr>
+        <td class="narrow nobr">Входной файл:</td><td>test.csv</td>
+    <td>&nbsp;</td>
+    <td class="narrow nobr">Ограничение времени:</td><td>1 сек</td>
+  </tr>
+  
+  <tr>
+        <td class="narrow nobr">Выходной файл:</td><td>submission.csv</td>
+    <td>&nbsp;</td>
+    <td class="narrow nobr">Ограничение памяти:</td><td>512 Мб</td>
+  </tr>
+  
+  <tr>
+        <td class="narrow nobr">Максимальный балл:</td><td>100</td>
+    <td>&nbsp;</td>
+    <td class="narrow nobr"></td><td></td>
+  </tr>
+  
+  
+  </table>
+
+  
+    <h3>Условие</h3>
+    
+            <p>
+                В рамках данной задачи требуется обучить модель на тренировочных данных, предсказывающую уйдёт ли клиент в течение следующего месяца. В качестве решение необходимо предоставить предсказание на тестовом наборе данных.
+            </p>
+            <p>
+                Вы можете использовать <a href="https://colab.research.google.com/drive/1BNSz1XKtk0LmdeARzTh3cMEXQZ8DIfWS?usp=sharing">базовое решение</a> в качестве начальной точки вашей работы.
+            </p>
+
+            <h3>Данные</h3>
+            <p>
+                <ul>
+                    <li><span cats-dict="1"><a href="download/att/ljLR9JpN7yTzDM8A587ES8kKQxraanBd_train.csv">train.csv</a></span>&nbsp;&#8212; набор данных для обучения</li>
+                    <li><span cats-dict="1"><a href="download/att/ljLR9JpN7yTzDM8A587ES8kKQxraanBd_test.csv">test.csv</a></span>&nbsp;&#8212; набор данных для предсказания</li>
+                    <li><span cats-dict="1"><a href="download/att/ljLR9JpN7yTzDM8A587ES8kKQxraanBd_sample_submission.csv">sample_submission.csv</a></span>&nbsp;&#8212; пример файла для отправки в проверяющую систему</li>
+                </ul>
+            </p>
+
+            <h3>Метрика качества</h3>
+            <p>
+                Точность предсказания оценивается с использованием метрики <span cats-dict="1"><a href="https://en.wikipedia.org/wiki/F-score#.7F.27.22.60UNIQ--postMath-00000003-QINU.60.22.27.7F">F-beta</a></span> с параметром <span class="TeX" title="\beta=2">&beta;&#8239;=&#8239;<span class="num">2</span></span>.
+            </p>
+            <p>
+                Баллы за задачу начисляются по следующей формуле <span class="TeX" title="score = 100\cdot\operatorname{f2\_score}(y\_true, y\_pred)"><i>score</i>&nbsp;=&nbsp;<span class="num">100</span><b>&#8239;</b>&#x22C5;<b>&#8239;</b><span class="mathrm"><i>f</i> <span class="num">2</span>_<i>score</i></span>(<i>y</i>_<i>true</i>, <i>y</i>_<i>pred</i>)</span>
+            </p>
+        
+  
+  
+    <h3>Формат входного файла</h3>
+    
+            <p>
+                В <span cats-dict="1">датасете</span> собраны данные о пользователях телекоммуникационной компании:
+                <ul>
+                    <li><code>State</code>&nbsp;&#8212; штат</li>
+                    <li><code>Account length</code>&nbsp;&#8212; как долго этот клиент с компанией (количество дней)</li>
+                    <li><code>Area code</code>&nbsp;&#8212; код географической зоны</li>
+                    <li><code>International plan</code>&nbsp;&#8212; подключен ли специальный тариф для международных звонков</li>
+                    <li><code>Voice mail plan</code>&nbsp;&#8212; подключен ли сервис голосовых сообщений</li>
+                    <li><code>Number vmail messages</code>&nbsp;&#8212; количество отправленных голосовых сообщений</li>
+                    <li><code>Total day minutes</code>&nbsp;&#8212; продолжительность разговоров в дневное время (минуты)</li>
+                    <li><code>Total day calls</code>&nbsp;&#8212; количество звонков в дневное время</li>
+                    <li><code>Total day charge</code>&nbsp;&#8212; расходы на звонки в дневное время</li>
+                    <li><code>Total eve minutes</code>&nbsp;&#8212; продолжительность разговоров в вечернее время (минуты)</li>
+                    <li><code>Total eve calls</code>&nbsp;&#8212; количество звонков в вечернее время</li>
+                    <li><code>Total eve charge</code>&nbsp;&#8212; расходы на звонки в вечернее время</li>
+                    <li><code>Total night minutes</code>&nbsp;&#8212; продолжительность разговоров в ночное время (минуты)</li>
+                    <li><code>Total night calls</code>&nbsp;&#8212; количество звонков в ночное время</li>
+                    <li><code>Total night charge</code>&nbsp;&#8212; расходы на звонки в ночное время</li>
+                    <li><code>Total intl minutes</code>&nbsp;&#8212; продолжительность разговоров в международных время (минуты)</li>
+                    <li><code>Total intl calls</code>&nbsp;&#8212; количество звонков в международных время</li>
+                    <li><code>Total intl charge</code>&nbsp;&#8212; расходы на звонки в международных время</li>
+                    <li><code>Customer service calls</code>&nbsp;&#8212; количество обращений в службу поддержки</li>
+                    <li><code>Churn</code>&nbsp;&#8212; текущий статус клиента (ушел/остался). Целевая переменная</li>
+                </ul>
+            </p>
+        
+  
+  
+  
+    <h3>Формат выходного файла</h3>
+    
+            <p>
+                В качестве решения необходимо загрузить файл в формате <code>csv</code> с единственным полем <code>Churn</code>&nbsp;&#8212; предсказанные на тестовой выборке значения целевой переменной.
+                Разделителем целой и дробной части в числах должна быть точка.
+            </p>
+        
+  
+  
+  
+  
+  <div class="submit"></div>
+  <hr>
+</div>
+
+<div class="nav_container hidden">
+  
+  <div class="n_item" id="p5730240_verdict"><a href="#p5730240" class="n_button" title="Предсказание оттока клиентов: классификация">G1</a></div>
+  
+</div>
+<script type="text/javascript">
+$('.problem_menu_click').click(function() { $(this).parent().next().toggle(); $(this).toggleClass('problem_menu_hovered'); });
+
+var query_params = (function() {
+  var url = window.location.search;
+  var qs = url.substring(url.indexOf('?') + 1).split(';');
+  for(var i = 0, result = {}; i < qs.length; i++) {
+    qs[i] = qs[i].split('=');
+    result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+  }
+  return result;
+})();
+var sid = query_params.sid;
+var uid = query_params.uid;
+var has_submit = !query_params.nosubmit;
+var rid = query_params.rid;
+
+if (sid) {
+  $('.problem_list_link').each(function() { this.href += ';sid=' + sid; });
+}
+
+function toggle_whitespace() {
+  var p = $(this).parents('.problem_text');
+  var ws = this.checked;
+  p.find('.sample code').each(function() {
+    var t = $(this).text();
+    if (ws)
+      t = t.replace(/ /g, '\u2423');
+    else
+      t = t.replace(/\u2423/g, ' ');
+    $(this).text(t);
+  });
+}
+$('.problem_text div.problem_menu input.whitespace').click(toggle_whitespace).each(toggle_whitespace);
+
+$('.basic_math').click(function() {
+  var p = $(this).parents('.problem_text');
+  if (this.checked)
+    p.find('span.TeX').each(unset_tex);
+  else
+    apply_mathjax(p);
+});
+
+function toggle_wide_text() {
+  var p = $(this).parents('.problem_text');
+  p.children('p, ul, ol').css({ 'max-width': this.checked ? 'none' : '1000px' });
+}
+$('.wide_text').click(toggle_wide_text).each(toggle_wide_text);
+
+$('.show_editor').click(function() {
+  Editor.toggle_editor_visibility($(this).parents('.problem_text'));
+});
+
+$('.problem_text div.problem_menu li.langs a').click(function() {
+  var p = document.location.pathname;
+  if (p.substring(p.length - 5) === '.html') {
+    
+    var n = '-pl-' + this.innerText;
+    document.location.pathname =
+      p.indexOf('-pl-') < 0 ? p.replace('.html', n + '.html') : p.replace(/-pl-[a-z]+/, n);
+  }
+  else {
+    var s = document.location.search;
+    document.location.search =
+      s.indexOf('pl=') < 0  ? s + ';pl=' + this.innerText : s.replace(/pl=[a-z]+/, 'pl=' + this.innerText);
+  }
+});
+
+function copy_button_click() {
+  var td = $(this).parents('td');
+  navigator.clipboard.writeText(td.find('code')[0].innerText);
+}
+$('.copy_button').click(copy_button_click);
+
+var enable_navigation = function() {
+  if (query_params.nonav) return;
+  $('.nav_container').removeClass('hidden');
+  $('.n_item a').first().addClass('current');
+  var $root = $('html, body');
+  $(document).on('click', 'a[href^="#p"]', function () {
+    $root.animate({ scrollTop: $($.attr(this, 'href')).offset().top - 10 }, 400);
+    return false;
+  });
+  var nav_links = $('.n_item a');
+  $(document).on('scroll', function() {
+    var from_top = window.scrollY;
+    $(nav_links).each(function() {
+      var link = $(this);
+      var problem_text = $(link[0].hash)[0];
+      var eps = 15;
+      problem_text.offsetTop - eps <= from_top && problem_text.offsetTop + problem_text.offsetHeight > from_top ?
+        link.addClass('current') : link.removeClass('current');
+    })
+  });
+};
+$(document).ready(enable_navigation);
+
+
+var has_quizzes = false; $(document).ready(get_last_verdicts); 
+function get_last_verdicts() {
+  if (!sid) return;
+  $.get('../?f=api_get_last_verdicts;problem_ids=5730240;sid=' + sid).success(function(result) {
+    if (!result) return;
+    for (var cpid in result) {
+      if (!result[cpid]) continue;
+      var r = result[cpid];
+      if (r.verdict) {
+        var v = $('#p' + cpid + ' .last_verdict > .verdict');
+        v.addClass('run_details_' + r.verdict);
+        v.find('a').attr('href', '../' + r.href_run_details).text(r.verdict);
+        v.find('div').html(r.failed_test || '.&nbsp;');
+        v.parent().show();
+        $('#p' + cpid + '_verdict').addClass('run_details_' + r.verdict);
+      }
+      if (r.href_problem_details) {
+        var pd = $('#p' + cpid + ' .problem_details_link');
+        pd.find('a').attr('href', '../' + r.href_problem_details);
+        pd.show();
+      }
+    }
+    if (result.can_submit && has_submit) gen_forms(result);
+  });
+}
+
+function gen_forms(problems) {
+  var gen_form = function(select_id, editor_id, problem_id, cpid) {
+    if (!problems[cpid].allowed) return;
+    var container = $('#p' + cpid).find('.submit');
+    if (container.find('form').length) return;
+    var form = $('<form>').attr({ enctype: 'multipart/form-data', class: 'submit_form hidden' });
+
+    var select = $('<select>').attr({ name: 'de_id', id: select_id, class: 'toolbar_item editor_only' });
+    var add_option = function(de_id, de_syntax, de_name) {
+      select.append($('<option>').attr({ value: de_id, 'editor-syntax': de_syntax }).text(de_name));
+    }
+     add_option('by_extension', '', 'по расширению файла');  add_option('772264', '', 'Answer text');  add_option('3194753', '', 'Quiz');  add_option('681949', 'python', 'Python 3.8.1'); 
+    select.appendTo(form);
+
+    $('<input>').attr({ type: 'file', name: 'source', size: '25', class: 'file toolbar_item editor_only' }).appendTo(form);
+    $('<button>').
+      attr({ type: 'submit', name: 'submit', class: 'button toolbar_item' }).
+      text('отправить').appendTo(form);
+    var sources_info_btn = $('<button>').attr({ type: 'button', class: 'button toolbar_item' })
+      .text('последняя попытка')
+      .click(get_sources_info_api).appendTo(form);
+
+    var menu_trigger = $('<a>').attr({ class: 'problem_menu_trigger toolbar_item' }).
+      html('&#x2261').click(function() { $(this).toggleClass('problem_menu_hovered'); }).appendTo(form);
+    var editor_menu = $('<div>').attr('class', 'editor_menu').appendTo(menu_trigger);
+    var add_btn = function(capt, onclick) {
+      $('<button>').attr({ class: 'button', type: 'button' }).text(capt).click(onclick).appendTo(editor_menu);
+    };
+    add_btn('сбросить редактор', function() { Editor.reset_localstorage(editor_id) });
+    add_btn('невидимые символы', function() { Editor.toggle_invisible_chars(editor_id) });
+    add_btn('авто перенос', function() { Editor.toggle_auto_wrap(editor_id) });
+    $('<br><br>').appendTo(form);
+
+    $('<textarea>').attr({
+      name: 'source_text', cols: 100, rows: 15,
+      'data-editor': 'text', 'data-gutter': '1', 'data-id': editor_id, 'data-init-defer': '1'
+    }).appendTo(form);
+    $('<input>').attr({ type: 'hidden', name: 'problem_id', value: problem_id }).appendTo(form);
+
+    $('<div>').attr({ 'class' : 'submit_messages'}).appendTo(container);
+    form.on('submit', process_submit);
+    form.appendTo(container);
+    form.removeClass('hidden');
+    Editor.init_editor(editor_id);
+    Editor.set_syntax(editor_id, select_id);
+    // Load to editor source code of requested submission.
+    if (rid) sources_info_btn.click();
+  }
+   gen_form('de5730237', 'ed_pt5730240', '5730237', '5730240'); 
+  if (has_quizzes) init_quizzes();
+}
+
+function process_submit(e) {
+  e.preventDefault();
+  var form = $(this);
+  if (has_quizzes && !is_all_quiz_input_valid(form, 'Не используйте пробелы в ответе'))
+    return;
+  var request_url = '../?f=api_submit_problem';
+  if (!sid) return;
+  request_url += ';sid=' + sid;
+
+  var form_params = form.serializeArray();
+  var form_data = new FormData();
+  var file_tag = form.find('input[type="file"]')[0];
+  form_data.append(file_tag.name, file_tag.files[0]);
+
+  for (var i = 0; i < form_params.length; i++) {
+    if (has_quizzes && form_params[i].name === 'de_id') {
+      form_params[i].value = '3194753';
+    }
+    if (form_params[i].name === 'source_text') {
+      var editor = Editor.get_editor(form);
+      if (!editor) return false;
+      form_params[i].value = editor.getSession().getValue();
+    }
+    form_data.append(form_params[i].name, form_params[i].value);
+  }
+
+  var xhr = new XMLHttpRequest();
+  if (!xhr) {
+    return false;
+  }
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status == 200) {
+        fill_messages(xhr.response, form);
+      }
+      // TODO
+    }
+  };
+  xhr.open('POST', request_url);
+  xhr.send(form_data);
+};
+
+function fill_messages(response, form) {
+  var message_container = form.parent().find('.submit_messages');
+  response = JSON.parse(response);
+  message_container.empty();
+  var append_to_container = function(message, classes) {
+    message_container.append($('<div>', { class: classes } ).text(message));
+  }
+  if (response.de_name) {
+    append_to_container('Определена среда разработки' + ': ' + response.de_name);
+  }
+  if (response.de_not_allowed) {
+    var not_allowed = response.de_not_allowed;
+    append_to_container('Указанная среда разработки не разрешена. Допустимые среды:');
+    var de_list = $('<ul>');
+    for (var i = 0; i < not_allowed.length; i++) {
+      de_list.append('<li>' + not_allowed[i].description + '</li>');
+    }
+    message_container.append(de_list);
+  }
+  var messages = response.messages;
+  for (var i = 0; i < messages.length; i++) {
+    append_to_container(messages[i], 'messages');
+  }
+  if (response.href_run_details) {
+    var href_run_details = $("<a/>", {
+      href: '../' + response.href_run_details,
+      text: 'Просмотреть результат попытки',
+    });
+    message_container.append(href_run_details);
+  }
+}
+
+function get_sources_info_api(rid_param) {
+  if (!sid) return;
+  var form = $(this).parent();
+  var editor = Editor.get_editor(form);
+  if (!ace || !editor) return;
+  var request_url = '../?f=api_get_sources_info' + ';sid=' + sid;
+  if (uid) request_url += ';uid=' + uid;
+  if (rid_param) request_url += ';rid=' + rid_param;
+  $.ajax({
+    url: request_url,
+    data: { problem_id: form.find('input[name=problem_id]').val() },
+    success: function(response) {
+      if (response.src) {
+        editor.session.doc.setValue(response.src);
+        editor.focus();
+      }
+      if (response.de_id)
+        form.find('select[name=de_id]').val(response.de_id).change();
+      if (has_quizzes)
+        fill_quiz_forms(editor, form.parents('.problem_text'));
+    }
+  });
+}
+
+
+</script>
+<span class="timing">0.288s 0.023s 21</span>
+
+</body>
+</html>
